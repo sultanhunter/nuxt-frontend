@@ -1,6 +1,10 @@
 <script setup>
 
-defineProps({
+const props = defineProps({
+  copIndex: {
+    type: String,
+    required: true,
+  },
   src: {
     type: String,
     required: true,
@@ -11,13 +15,21 @@ defineProps({
   }
 })
 
-const isOpen = ref(false)
+const {setIsOpen, setSelectedOption} = useModal()
+
+const onClick = () => {
+  setIsOpen(true);
+  setSelectedOption({
+    copIndex: props.copIndex,
+    type: props.type
+  })
+}
 
 </script>
 
 
 <template>
-  <div @click="isOpen = true">
+  <div @click="onClick()">
     <div class="flex flex-col items-center justify-center rounded-lg h-[30vh] bg-amber-50/45  border"
          v-if="src.length===0 ">
       <p>Select {{ type }}</p>

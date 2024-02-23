@@ -30,17 +30,17 @@ const cityImage = computed(() => {
 
   <div class="flex flex-row w-full h-full justify-between">
     <div class="flex-1 py-3 px-1 md:px-4">
-      <RoundedImage :src="copImage" type="cop"/>
+      <RoundedImage :src="copImage" type="cop" :copIndex="index"/>
     </div>
     <div class="flex-1 py-3 px-1 md:px-4">
       <div class="w-full">
-        <RoundedImage :src="cityImage" type="city"/>
+        <RoundedImage :src="cityImage" type="city" :copIndex="index"/>
       </div>
 
     </div>
     <div class="flex-1 py-3 px-1 md:px-4">
       <div class="w-full">
-        <RoundedImage :src="cityImage" type="vehicle"/>
+        <RoundedImage :src="cityImage" type="vehicle" :copIndex="index"/>
       </div>
 
     </div>
