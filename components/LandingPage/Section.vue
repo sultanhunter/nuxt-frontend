@@ -1,31 +1,49 @@
 <script setup>
- const props =defineProps({
-  index:{
-    type:String,
-    required:true,
+const props = defineProps({
+  index: {
+    type: String,
+    required: true,
   }
 })
 
- const copImage = `/img/cop${props.index}.png`;
+const copImage = `/img/cop${props.index}.png`;
 
+const {
+  updateSelectedCity,
+  updateSelectedVehicle,
+  getSelectedChoice,
+} = useCapture()
+
+const choice = getSelectedChoice(props.index)
+const cityImage = computed(() => {
+  const selectedCityId = choice.value.cityId;
+  if (!selectedCityId) {
+    return ''
+  }
+  return `img/${selectedCityId}.png`
+})
 
 </script>
 
 
 <template>
-  
-<div class="flex flex-row w-full h-full">
-  <div class="flex-grow py-3 px-1 md:px-4">
-    <RoundedImage :src="copImage"/>
-  </div>
-  <div class="flex-grow py-3 px-1 md:px-4">
-    <RoundedImage :src="copImage"/>
 
-  </div>
-  <div class="flex-grow py-3 px-1 md:px-4" >
-    <RoundedImage :src="copImage"/>
+  <div class="flex flex-row w-full h-full justify-between">
+    <div class="flex-1 py-3 px-1 md:px-4">
+      <RoundedImage :src="copImage" type="cop"/>
+    </div>
+    <div class="flex-1 py-3 px-1 md:px-4">
+      <div class="w-full">
+        <RoundedImage :src="cityImage" type="city"/>
+      </div>
 
+    </div>
+    <div class="flex-1 py-3 px-1 md:px-4">
+      <div class="w-full">
+        <RoundedImage :src="cityImage" type="vehicle"/>
+      </div>
+
+    </div>
   </div>
-</div>
 
 </template>

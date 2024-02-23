@@ -7,6 +7,25 @@ interface CopChoice {
 }
 
 
+interface City {
+    id: string;
+    name: string;
+    distance: number
+}
+
+interface Vehicle {
+    id: string;
+    kind: string;
+    range: number;
+    count: number;
+}
+
+interface CityVehicleData {
+    cities: City[];
+    vehicles: Vehicle[]
+}
+
+
 export default () => {
 
     const initialState = [
@@ -14,48 +33,64 @@ export default () => {
     ];
     const selectionState = () => useState<CopChoice[]>('selectionState', () => initialState)
 
-    const getData = async () => {
+    const cityVehicleData = () => useState<CityVehicleData>('cityVehicleData')
 
+    const isLoading = useState('isLoading', () => false)
+
+    const getCityVehicleData = async () => {
+        isLoading.value = true;
         const url = 'http://localhost:8000/capture'
         try {
             const {data} = await axios.get(url)
+
+            const cityVehicleDataFromApi: CityVehicleData = data;
+
+            const ourData = cityVehicleData()
+            ourData.value = cityVehicleDataFromApi
+            isLoading.value = false
+            console.log(ourData.value)
+
         } catch (e) {
+            isLoading.value = false
         }
     }
 
     const updateSelectedCity = (copIndex: string, cityId: string) => {
+        console.log('updating city')
         const state = selectionState()
-        const choice = state.value.find((choice) => choice.copIndex === copIndex);
-        if (choice) {
-            choice.cityId = cityId;
+        const choice = computed(() => {
+            return state.value.find((choice) => choice.copIndex === copIndex);
+        });
+        if (choice.value) {
+            choice.value.cityId = cityId;
         }
     }
 
     const updateSelectedVehicle = (copIndex: string, vehicleId: string) => {
+        console.log('updating city')
         const state = selectionState()
-        const choice = state.value.find((choice) => choice.copIndex === copIndex)
-        if (choice) {
-            choice.vehicleId = vehicleId
+        const choice = computed(() => {
+            return state.value.find((choice) => choice.copIndex === copIndex);
+        });
+        if (choice.value) {
+            choice.value.vehicleId = vehicleId;
         }
     }
 
-    const getSelectedCityId = (copIndex: string) => {
-        const state = selectionState()
-        const choice = state.value.find((choice) => choice.copIndex === copIndex);
-        return choice?.cityId
-    }
 
-    const getSelectedVehicleId = (copIndex: string) => {
+    const getSelectedChoice = (copIndex: string) => {
         const state = selectionState()
-        const choice = state.value.find((choice) => choice.copIndex === copIndex);
-        return choice?.vehicleId
+        return computed(() => {
+            return state.value.find((choice) => choice.copIndex === copIndex);
+        });
     }
 
 
     return {
+        isLoading,
+        getCityVehicleData,
         updateSelectedCity,
         updateSelectedVehicle,
-        getSelectedCityId,
-        getSelectedVehicleId,
+        getSelectedChoice,
     }
 }
