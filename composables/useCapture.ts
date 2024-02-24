@@ -54,7 +54,7 @@ export default () => {
 
     const fetchCityVehicleData = async () => {
         isFetchingData.value = true;
-        const url = 'http://localhost:8000/capture'
+        const url = 'https://nuxt-backend-vez7.onrender.com/capture'
         try {
 
             let timerCompleted = false;
@@ -87,7 +87,7 @@ export default () => {
             alert('Select all options')
             return
         }
-        const url = 'http://localhost:8000/capture'
+        const url = 'https://nuxt-backend-vez7.onrender.com/capture'
 
         const body = {
             'copChoices': selectionState().value.map((choice) => ({
