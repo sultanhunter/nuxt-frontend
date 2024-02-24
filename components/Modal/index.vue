@@ -11,6 +11,7 @@ const {
   getSelectedChoiceForCop,
   cityAlreadySelectedForCop,
   vehicleAlreadySelectedForCop,
+  vehicleAvailableForCity,
 } = useCapture()
 
 const cities = computed(() => {
@@ -48,22 +49,22 @@ const selectedCityId = computed(() => {
 const onSelect = (id: string) => {
 
   if (type.value === 'city') {
-    if (!cityAvailableForCop(copIndex.value, id)) {
+    if (selectedId.value === id) {
+      selectedId.value = ''
       return
-    } else {
-      if (selectedId.value === id) {
-        selectedId.value = ''
-        return
-      }
     }
 
   } else if (type.value === 'vehicle') {
 
     const cityId = selectedCityId.value
 
-    const available = vehicleAvailableForCop(copIndex.value, cityId, id)
+    const available = vehicleAvailableForCity(cityId, id)
 
-    if (!cityId || !available) {
+    if (!cityId) {
+      alert('Select City First')
+      return
+    } else if (!available) {
+      alert('Vehicle range not valid for selected city')
       return
     } else {
       if (selectedId.value === id) {
@@ -159,7 +160,7 @@ onMounted(() => {
           </div>
 
           <!-- Not available tag -->
-          <div v-if="!vehicleAvailableForCop(copIndex,selectedCityId,vehicle.id) && !(selectedId===vehicle.id)"
+          <div v-if="!vehicleAvailableForCop(copIndex,vehicle.id) && !(selectedId===vehicle.id)"
                class="absolute rounded-lg top-0 left-0 bottom-0 right-0 h-full flex items-center justify-center bg-red-400/60 text-white font-bold">
             Not Available
           </div>

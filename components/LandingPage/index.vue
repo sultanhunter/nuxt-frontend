@@ -18,12 +18,6 @@ const fugitiveNotFound = computed(() => {
   return result().value && !result().value?.success
 })
 
-const captureCopIndex = computed(() => {
-  if (fugitiveFound) {
-    return result().value!.copIndex
-  }
-})
-
 
 </script>
 
@@ -31,7 +25,7 @@ const captureCopIndex = computed(() => {
   <div class="h-screen flex flex-col">
 
     <div v-if="isFetchingData" class="h-full w-full flex items-center justify-center">
-      Fetching...
+      <Loading/>
     </div>
 
     <div v-else-if="isSubmittingData" class="h-full w-full flex items-center justify-center">
@@ -51,18 +45,18 @@ const captureCopIndex = computed(() => {
 
       <!-- Main content div -->
       <div class="h-full w-full flex flex-col">
-        <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl1})` }">
-          <div class="backdrop-blur h-full w-full">
+        <div class="flex-grow bg-cover bg-no-repeat  " :style="{ 'background-image': `url(${imageUrl1})` }">
+          <div class="backdrop-blur bg-amber-100/70 h-full w-full border-b">
             <LandingPageSection copIndex="0"/>
           </div>
         </div>
         <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl2})` }">
-          <div class="backdrop-blur h-full w-full">
+          <div class="backdrop-blur bg-amber-500/60 h-full w-full border-b">
             <LandingPageSection copIndex="1"/>
           </div>
         </div>
         <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl3})` }">
-          <div class="backdrop-blur h-full w-full">
+          <div class="backdrop-blur bg-amber-800/70 h-full w-full border-b">
             <LandingPageSection copIndex="2"/>
           </div>
         </div>
@@ -70,7 +64,7 @@ const captureCopIndex = computed(() => {
 
       <!-- Start button -->
       <div @click.stop="startHunting()"
-           class="absolute bottom-[8vh] right-[28vw] min-w-[100px] min-h-[100px] w-[10vw] h-[10vw] rounded-full bg-amber-800 overflow-hidden flex items-center justify-center drop-shadow-lg">
+           class="absolute bottom-[8vh] right-[28vw] min-w-[100px] min-h-[100px] w-[10vw] h-[10vw] rounded-full bg-amber-950 overflow-hidden flex items-center justify-center drop-shadow-lg">
         <button class="md:text-xl text-md text-white font-bold italic">Start</button>
       </div>
     </div>

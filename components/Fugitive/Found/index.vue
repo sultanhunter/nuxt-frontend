@@ -2,6 +2,12 @@
 import Lottie from "lottie-web";
 import animationData from "@/public/assets/found.json"
 
+const {result} = useCapture()
+
+const captureCopIndex = computed(() => {
+  return result().value.copIndex
+})
+
 const lottieContainer = ref(null);
 
 onMounted(() => {
@@ -13,9 +19,31 @@ onMounted(() => {
     animationData: animationData,
   })
 })
+
+const imageUrl = computed(() => {
+  return `/img/cop${captureCopIndex.value}.png`
+})
 </script>
 
 <template>
-  <div ref="lottieContainer"></div>
+  <div class="h-full w-full  bg-cover bg-no-repeat"
+       :style="{ 'background-image': `url(${imageUrl})` }">
+    <div class="h-full w-full flex flex-col backdrop-blur items-center justify-evenly ">
+      <div class="bg-black/70 w-full h-10 flex justify-center items-center">
+        <p class="text-xl italic text-white">Caught</p>
+      </div>
+      <div class="flex md:px-20 px-5 items-center justify-center h-full w-full">
+        <div class="flex-1">
+          <NuxtImg :src="imageUrl" class="rounded border object-cover"/>
+        </div>
+        <div ref="lottieContainer" class="flex-1">
+        </div>
+        <div class="flex-1">
+          <NuxtImg src="/img/criminal.png" class="rounded-lg border object-cover"/>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 </template>

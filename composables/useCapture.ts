@@ -48,7 +48,7 @@ export default () => {
 
     const result = () => useState<Result | null>('result', () => null)
 
-    const isFetchingData = useState('isLoading', () => false)
+    const isFetchingData = useState('isLoading', () => true)
 
     const isSubmittingData = useState('isSubmitting', () => false)
 
@@ -56,14 +56,25 @@ export default () => {
         isFetchingData.value = true;
         const url = 'http://localhost:8000/capture'
         try {
+
+            let timerCompleted = false;
+            setTimeout(() => {
+                if (cityVehicleData().value) {
+                    isFetchingData.value = false
+                }
+                timerCompleted = true
+            }, 1500)
+
             const {data} = await axios.get(url)
 
             const cityVehicleDataFromApi: CityVehicleData = data;
 
             const ourData = cityVehicleData()
             ourData.value = cityVehicleDataFromApi
-            isFetchingData.value = false
-            console.log(ourData.value)
+            if (timerCompleted) {
+                isFetchingData.value = false
+            }
+
 
         } catch (e) {
             isFetchingData.value = false
@@ -91,12 +102,12 @@ export default () => {
 
             let timerCompleted = false;
 
-            const timer = setTimeout(() => {
+            setTimeout(() => {
                 if (result().value) {
                     isSubmittingData.value = false
                 }
                 timerCompleted = true
-            }, 1000)
+            }, 1500)
 
             const {data} = await axios.post(url, body)
             result().value = data;
@@ -116,6 +127,7 @@ export default () => {
         if (choice) {
             if (cityId.length > 1) {
                 choice.cityId = cityId;
+                choice.vehicleId = null
             } else {
                 choice.cityId = null
                 choice.vehicleId = null
@@ -150,39 +162,10 @@ export default () => {
             return true
         }
 
-        const vehiclesSelectedCount: Record<string, number> = {};
-        selections.value.forEach((choice) => {
-            if (choice.vehicleId) {
-                vehiclesSelectedCount[choice.vehicleId] = (vehiclesSelectedCount[choice.vehicleId] || 0) + 1
-            }
-        })
-
-
-        const availableVehiclesForThisCity = cityVehicleData().value.vehicles.filter((vehicle) => {
-            const id = vehicle.id
-            const range = vehicle.range
-            const totalCount = vehicle.count
-
-            const cityDistance = cityVehicleData().value.cities.find((city) => {
-                return city.id === cityId
-            })?.distance
-
-
-            const rangeValid = range >= (cityDistance ?? 0) * 2;
-
-            const selectedCount = vehiclesSelectedCount[id] ?? 0
-
-            const countValid = vehicleAlreadySelectedForCop(copIndex, id) ? true : (totalCount - selectedCount >= 1)
-
-            return rangeValid && countValid;
-
-        })
-
-
-        return !choice && (availableVehiclesForThisCity.length >= 1);
+        return !choice;
     }
 
-    const vehicleAvailableForCop = (copIndex: string, cityId: string, vehicleId: string) => {
+    const vehicleAvailableForCop = (copIndex: string, vehicleId: string) => {
         const selection = selectionState()
 
         const choice = selection.value.find((choice) => choice.vehicleId === vehicleId)
@@ -194,16 +177,6 @@ export default () => {
 
         const data = cityVehicleData();
 
-
-        const cityDistance = data.value.cities.find((city) => city.id === cityId)?.distance;
-        const vehicleRange = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.range
-
-        if (!cityDistance || !vehicleRange) {
-            return false
-        }
-
-        const vehicleRangeValid = vehicleRange >= (cityDistance! * 2);
-
         const totalCount = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.count
 
         if (!totalCount) {
@@ -213,7 +186,22 @@ export default () => {
 
         const usedCount = selection.value.filter((choice) => choice.vehicleId === vehicleId).length;
 
-        return vehicleRangeValid && (totalCount - usedCount >= 1)
+        return totalCount - usedCount >= 1
+    }
+
+    const vehicleAvailableForCity = (cityId: string, vehicleId: string) => {
+
+        const data = cityVehicleData()
+
+        const city = data.value.cities.find((city) => city.id === cityId)
+        const vehicle = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)
+
+        if (!city || !vehicle) {
+            return false
+        }
+
+        return vehicle.range >= city.distance * 2
+
     }
 
     const cityAlreadySelectedForCop = (copIndex: string, cityId: string) => {
@@ -239,6 +227,7 @@ export default () => {
         vehicleAvailableForCop,
         cityAlreadySelectedForCop,
         vehicleAlreadySelectedForCop,
+        vehicleAvailableForCity,
         startHunting,
     }
 }

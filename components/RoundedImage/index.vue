@@ -42,5 +42,6 @@ const onClick = () => {
     </div>
     <NuxtImg class="rounded-lg h-[30vh] w-full  border object-cover" v-else :src='src'/>
 
+
   </div>
 </template>
