@@ -9,14 +9,12 @@ const props = defineProps({
 const copImage = `/img/cop${props.index}.png`;
 
 const {
-  updateSelectedCity,
-  updateSelectedVehicle,
   getSelectedChoice,
 } = useCapture()
 
 const choice = getSelectedChoice(props.index)
 const cityImage = computed(() => {
-  const selectedCityId = choice.value.cityId;
+  const selectedCityId = choice.cityId;
   if (!selectedCityId) {
     return ''
   }
@@ -24,7 +22,7 @@ const cityImage = computed(() => {
 })
 
 const vehicleImage = computed(() => {
-  const selectedVehicleId = choice.value.vehicleId;
+  const selectedVehicleId = choice.vehicleId;
   if (!selectedVehicleId) {
     return ''
   }

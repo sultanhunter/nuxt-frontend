@@ -35,22 +35,18 @@ const selectedCityId = computed(() => {
 
   const selectedChoice = getSelectedChoice(copIndex)
 
-  return selectedChoice.value?.cityId ?? ''
+  return selectedChoice?.cityId ?? ''
 })
 
 const onSelect = (id: string) => {
 
-  if (type.value === 'city' && !cityAvailable(id).value) {
+  if (type.value === 'city' && !cityAvailable(id)) {
     return
   } else if (type.value === 'vehicle') {
 
     const cityId = selectedCityId.value
-
-    console.log('cityId', cityId)
-
-    const available = vehicleAvailable(cityId, id).value
-
-    console.log('available', available)
+    
+    const available = vehicleAvailable(cityId, id)
 
     if (!cityId || !available) {
       return
@@ -90,7 +86,7 @@ const onConfirm = () => {
             <p class="text-md font-bold truncate">{{ city.name }}</p>
             <p class="text-sm italic">{{ city.distance }} km</p>
           </div>
-          <div v-if="!cityAvailable(city.id).value"
+          <div v-if="!cityAvailable(city.id)"
                class="absolute rounded-lg top-0 left-0 bottom-0 right-0 h-full flex items-center justify-center bg-red-400/60 text-white font-bold">
             Not Available
           </div>
@@ -108,7 +104,7 @@ const onConfirm = () => {
             <p class="text-md font-bold">{{ vehicle.kind }}</p>
             <p class="text-sm italic">Range: {{ vehicle.range }} km</p>
           </div>
-          <div v-if="!vehicleAvailable(selectedCityId,vehicle.id).value"
+          <div v-if="!vehicleAvailable(selectedCityId,vehicle.id)"
                class="absolute rounded-lg top-0 left-0 bottom-0 right-0 h-full flex items-center justify-center bg-red-400/60 text-white font-bold">
             Not Available
           </div>

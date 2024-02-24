@@ -39,7 +39,7 @@ export default () => {
 
     const isLoading = useState('isLoading', () => false)
 
-    const getCityVehicleData = async () => {
+    const fetchCityVehicleData = async () => {
         isLoading.value = true;
         const url = 'http://localhost:8000/capture'
         try {
@@ -58,83 +58,61 @@ export default () => {
     }
 
     const updateSelectedCity = (copIndex: string, cityId: string) => {
-        console.log('updating city')
         const state = selectionState()
-        const choice = computed(() => {
-            return state.value.find((choice) => choice.copIndex === copIndex);
-        });
-        if (choice.value) {
-            choice.value.cityId = cityId;
+        const choice = state.value.find((choice) => choice.copIndex === copIndex);
+        if (choice) {
+            choice.cityId = cityId;
         }
     }
 
     const updateSelectedVehicle = (copIndex: string, vehicleId: string) => {
-        console.log('updating city')
         const state = selectionState()
-        const choice = computed(() => {
-            return state.value.find((choice) => choice.copIndex === copIndex);
-        });
-        if (choice.value) {
-            choice.value.vehicleId = vehicleId;
+        const choice = state.value.find((choice) => choice.copIndex === copIndex);
+        if (choice) {
+            choice.vehicleId = vehicleId;
         }
     }
 
 
     const getSelectedChoice = (copIndex: string) => {
         const state = selectionState()
-        return computed(() => {
-            return state.value.find((choice) => choice.copIndex === copIndex);
-        });
+        return state.value.find((choice) => choice.copIndex === copIndex)
     }
 
     const cityAvailable = (cityId: string) => {
         const state = selectionState()
-        return computed(() => {
-            const choice = state.value.find((choice) => choice.cityId === cityId)
-            return !choice;
-        })
+        const choice = state.value.find((choice) => choice.cityId === cityId)
+        return !choice;
     }
 
     const vehicleAvailable = (cityId: string, vehicleId: string) => {
         const selection = selectionState()
         const data = cityVehicleData();
-        const cityDistance = computed(() => {
-            return data.value.cities.find((city) => city.id === cityId)?.distance;
-        })
-        const vehicleRange = computed(() => {
-            return data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.range
-        })
+        const cityDistance = data.value.cities.find((city) => city.id === cityId)?.distance;
+        const vehicleRange = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.range
 
-        if (!cityDistance.value || !vehicleRange.value) {
-            return computed(() => false)
+        if (!cityDistance || !vehicleRange) {
+            return false
         }
 
-        const vehicleRangeValid = computed(() => {
-            return vehicleRange.value! >= (cityDistance.value! * 2)
-        })
-
-        const totalCount = computed(() => {
-            return data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.count
-        })
-
-        if (!totalCount.value) {
-            return computed(() => false)
-
-        }
-
-        const usedCount = computed(() => {
-            return selection.value.filter((choice) => choice.vehicleId === vehicleId).length
-        })
+        const vehicleRangeValid = vehicleRange >= (cityDistance! * 2);
         
-        return computed(() => {
-            return vehicleRangeValid.value && (totalCount.value! - usedCount.value >= 1)
-        })
+        const totalCount = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.count
+
+        if (!totalCount) {
+            return false
+
+        }
+
+        const usedCount = selection.value.filter((choice) => choice.vehicleId === vehicleId).length;
+
+        return vehicleRangeValid && (totalCount - usedCount >= 1)
     }
 
 
     return {
         isLoading,
-        getCityVehicleData,
+        fetchCityVehicleData,
         updateSelectedCity,
         updateSelectedVehicle,
         getSelectedChoice,

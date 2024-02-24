@@ -4,10 +4,10 @@ const imageUrl2 = '/img/cop1.png';
 const imageUrl3 = '/img/cop2.png';
 
 
-const {isLoading, getCityVehicleData} = useCapture()
+const {isLoading, fetchCityVehicleData} = useCapture()
 
 onMounted(() => {
-  getCityVehicleData();
+  fetchCityVehicleData();
 });
 
 
