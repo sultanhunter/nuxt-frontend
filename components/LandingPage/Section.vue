@@ -35,16 +35,16 @@ const vehicleImage = computed(() => {
 <template>
 
   <div class="flex flex-row w-full h-full justify-between">
-    <div class="flex-1 py-3 px-1 md:px-4">
+    <div class="flex-1 py-3 px-1 md:px-6">
       <RoundedImage :src="copImage" type="cop" :copIndex="copIndex"/>
     </div>
-    <div class="flex-1 py-3 px-1 md:px-4">
+    <div class="flex-1 py-3 px-1 md:px-6">
       <div class="w-full">
         <RoundedImage :src="cityImage" type="city" :copIndex="copIndex"/>
       </div>
 
     </div>
-    <div class="flex-1 py-3 px-1 md:px-4">
+    <div class="flex-1 py-3 px-1 md:px-6">
       <div class="w-full">
         <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="copIndex"/>
       </div>

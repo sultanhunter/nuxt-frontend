@@ -98,7 +98,6 @@ onMounted(() => {
   } else {
     cities.value.forEach((city) => {
       if (cityAlreadySelectedForCop(copIndex.value, city.id)) {
-        console.log('city', city.id)
         selectedId.value = city.id
       }
     })

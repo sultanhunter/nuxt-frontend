@@ -25,6 +25,11 @@ interface CityVehicleData {
     vehicles: Vehicle[]
 }
 
+interface Result {
+    success: boolean;
+    copIndex?: string
+}
+
 
 export default () => {
 
@@ -41,10 +46,14 @@ export default () => {
         cities: [], vehicles: []
     }))
 
-    const isLoading = useState('isLoading', () => false)
+    const result = () => useState<Result | null>('result', () => null)
+
+    const isFetchingData = useState('isLoading', () => false)
+
+    const isSubmittingData = useState('isSubmitting', () => false)
 
     const fetchCityVehicleData = async () => {
-        isLoading.value = true;
+        isFetchingData.value = true;
         const url = 'http://localhost:8000/capture'
         try {
             const {data} = await axios.get(url)
@@ -53,13 +62,53 @@ export default () => {
 
             const ourData = cityVehicleData()
             ourData.value = cityVehicleDataFromApi
-            isLoading.value = false
+            isFetchingData.value = false
             console.log(ourData.value)
 
         } catch (e) {
-            isLoading.value = false
+            isFetchingData.value = false
         }
     }
+
+    const startHunting = async () => {
+        const allOptionsFilled = selectionState().value.every((choice) => choice.cityId && choice.vehicleId)
+        if (!allOptionsFilled) {
+            alert('Select all options')
+            return
+        }
+        const url = 'http://localhost:8000/capture'
+
+        const body = {
+            'copChoices': selectionState().value.map((choice) => ({
+                'cop': choice.copIndex,
+                'cityId': choice.cityId,
+                'vehicleId': choice.vehicleId
+            }))
+        }
+
+        try {
+            isSubmittingData.value = true
+
+            let timerCompleted = false;
+
+            const timer = setTimeout(() => {
+                if (result().value) {
+                    isSubmittingData.value = false
+                }
+                timerCompleted = true
+            }, 1000)
+
+            const {data} = await axios.post(url, body)
+            result().value = data;
+            if (timerCompleted) {
+                isSubmittingData.value = false
+            }
+        } catch (e) {
+            isSubmittingData.value = false
+        }
+
+    }
+
 
     const updateSelectedCityForCop = (copIndex: string, cityId: string) => {
         const state = selectionState()
@@ -178,7 +227,9 @@ export default () => {
 
 
     return {
-        isLoading,
+        isFetchingData,
+        isSubmittingData,
+        result,
         fetchCityVehicleData,
         updateSelectedCityForCop,
         updateSelectedVehicleForCop,
@@ -188,5 +239,6 @@ export default () => {
         vehicleAvailableForCop,
         cityAlreadySelectedForCop,
         vehicleAlreadySelectedForCop,
+        startHunting,
     }
 }

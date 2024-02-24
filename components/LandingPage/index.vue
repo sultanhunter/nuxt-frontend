@@ -4,36 +4,80 @@ const imageUrl2 = '/img/cop1.png';
 const imageUrl3 = '/img/cop2.png';
 
 
-const {isLoading, fetchCityVehicleData} = useCapture()
+const {isFetchingData, isSubmittingData, fetchCityVehicleData, startHunting, result} = useCapture()
 
 onMounted(() => {
   fetchCityVehicleData();
 });
 
+const fugitiveFound = computed(() => {
+  return result().value && result().value?.success
+})
+
+const fugitiveNotFound = computed(() => {
+  return result().value && !result().value?.success
+})
+
+const captureCopIndex = computed(() => {
+  if (fugitiveFound) {
+    return result().value!.copIndex
+  }
+})
+
 
 </script>
 
 <template>
-  <div v-if="!isLoading" class="h-screen flex flex-col">
-    <div class="relative flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl1})` }">
-      <div class="backdrop-blur h-full w-full">
-        <LandingPageSection copIndex="0"/>
+  <div class="h-screen flex flex-col">
+
+    <div v-if="isFetchingData" class="h-full w-full flex items-center justify-center">
+      Fetching...
+    </div>
+
+    <div v-else-if="isSubmittingData" class="h-full w-full flex items-center justify-center">
+      <Hunting/>
+    </div>
+
+    <div v-else-if="fugitiveFound" class="h-full w-full flex items-center justify-center">
+      <FugitiveFound/>
+    </div>
+
+    <div v-else-if="fugitiveNotFound" class="h-full w-full flex items-center justify-center">
+      <FugitiveNotFound/>
+    </div>
+
+
+    <div v-else class="h-full w-full relative">
+
+      <!-- Main content div -->
+      <div class="h-full w-full flex flex-col">
+        <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl1})` }">
+          <div class="backdrop-blur h-full w-full">
+            <LandingPageSection copIndex="0"/>
+          </div>
+        </div>
+        <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl2})` }">
+          <div class="backdrop-blur h-full w-full">
+            <LandingPageSection copIndex="1"/>
+          </div>
+        </div>
+        <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl3})` }">
+          <div class="backdrop-blur h-full w-full">
+            <LandingPageSection copIndex="2"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start button -->
+      <div @click.stop="startHunting()"
+           class="absolute bottom-[8vh] right-[28vw] min-w-[100px] min-h-[100px] w-[10vw] h-[10vw] rounded-full bg-amber-800 overflow-hidden flex items-center justify-center drop-shadow-lg">
+        <button class="md:text-xl text-md text-white font-bold italic">Start</button>
       </div>
     </div>
-    <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl2})` }">
-      <div class="backdrop-blur h-full w-full">
-        <LandingPageSection copIndex="1"/>
-      </div>
-    </div>
-    <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl3})` }">
-      <div class="backdrop-blur h-full w-full">
-        <LandingPageSection copIndex="2"/>
-      </div>
-    </div>
+
+
   </div>
-  <div v-else class="h-screen flex items-center justify-center">
-    Loading...
-  </div>
+
 </template>
 
 

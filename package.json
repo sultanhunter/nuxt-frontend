@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^1.6.7",
+    "lottie-web": "^5.12.2",
     "nuxt": "^3.10.2",
     "nuxt-icon": "^0.6.8",
     "vue": "^3.4.19",
