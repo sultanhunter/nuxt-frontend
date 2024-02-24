@@ -11,5 +11,5 @@ const isOpen = computed(() => {
 
 <template>
   <LandingPage/>
-  <Modal v-show="isOpen"/>
+  <Modal v-if="isOpen"/>
 </template>

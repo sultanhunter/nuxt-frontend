@@ -8,7 +8,7 @@ export default () => {
     const openState = () => useState('is-open', () => false)
 
 
-    const selectedOption = () => useState<SelectedModalOption>('selected-option', () => ({
+    const modalSelectedOption = () => useState<SelectedModalOption>('selected-option', () => ({
         copIndex: '',
         type: '',
     }));
@@ -17,13 +17,13 @@ export default () => {
     }
 
     const setSelectedOption = (options: SelectedModalOption) => {
-        selectedOption().value = options
+        modalSelectedOption().value = options
     }
 
     return {
         openState,
         setIsOpen,
-        selectedOption,
+        modalSelectedOption,
         setSelectedOption,
     }
 }

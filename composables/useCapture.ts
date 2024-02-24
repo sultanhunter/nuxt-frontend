@@ -2,8 +2,8 @@ import axios from "axios";
 
 interface CopChoice {
     copIndex: string;
-    cityId?: string;
-    vehicleId?: string;
+    cityId: string | null;
+    vehicleId: string | null;
 }
 
 
@@ -29,7 +29,11 @@ interface CityVehicleData {
 export default () => {
 
     const initialState = [
-        {copIndex: '0'}, {copIndex: '1'}, {copIndex: '2'}
+        {copIndex: '0', vehicleId: null, cityId: null}, {copIndex: '1', vehicleId: null, cityId: null}, {
+            copIndex: '2',
+            vehicleId: null,
+            cityId: null
+        }
     ];
     const selectionState = () => useState<CopChoice[]>('selectionState', () => initialState)
 
@@ -61,7 +65,12 @@ export default () => {
         const state = selectionState()
         const choice = state.value.find((choice) => choice.copIndex === copIndex);
         if (choice) {
-            choice.cityId = cityId;
+            if (cityId.length > 1) {
+                choice.cityId = cityId;
+            } else {
+                choice.cityId = null
+                choice.vehicleId = null
+            }
         }
     }
 
@@ -69,7 +78,11 @@ export default () => {
         const state = selectionState()
         const choice = state.value.find((choice) => choice.copIndex === copIndex);
         if (choice) {
-            choice.vehicleId = vehicleId;
+            if (vehicleId.length > 1) {
+                choice.vehicleId = vehicleId;
+            } else {
+                choice.vehicleId = null
+            }
         }
     }
 
@@ -79,15 +92,59 @@ export default () => {
         return state.value.find((choice) => choice.copIndex === copIndex)
     }
 
-    const cityAvailable = (cityId: string) => {
+    const cityAvailable = (copIndex: string, cityId: string) => {
         const state = selectionState()
+
         const choice = state.value.find((choice) => choice.cityId === cityId)
-        return !choice;
+
+        if (choice?.copIndex === copIndex) {
+            return true
+        }
+
+        const vehiclesSelectedCount: Record<string, number> = {};
+        state.value.forEach((choice) => {
+            if (choice.vehicleId) {
+                vehiclesSelectedCount[choice.vehicleId] = (vehiclesSelectedCount[choice.vehicleId] || 0) + 1
+            }
+        })
+
+
+        const availableVehiclesForThisCity = cityVehicleData().value.vehicles.filter((vehicle) => {
+            const id = vehicle.id
+            const range = vehicle.range
+            const totalCount = vehicle.count
+
+            const cityDistance = cityVehicleData().value.cities.find((city) => {
+                return city.id === cityId
+            })?.distance
+
+            const rangeValid = range >= (cityDistance ?? 0) * 2;
+
+            const selectedCount = vehiclesSelectedCount[id] ?? 0
+
+            const countValid = totalCount - selectedCount >= 1
+
+            return rangeValid && countValid;
+
+        })
+
+
+        return !choice && (availableVehiclesForThisCity.length >= 1);
     }
 
-    const vehicleAvailable = (cityId: string, vehicleId: string) => {
+    const vehicleAvailable = (copIndex: string, cityId: string, vehicleId: string) => {
         const selection = selectionState()
+
+        const choice = selection.value.find((choice) => choice.vehicleId === vehicleId)
+
+
+        if (choice?.copIndex === copIndex) {
+            return true
+        }
+
         const data = cityVehicleData();
+
+
         const cityDistance = data.value.cities.find((city) => city.id === cityId)?.distance;
         const vehicleRange = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.range
 
@@ -96,7 +153,7 @@ export default () => {
         }
 
         const vehicleRangeValid = vehicleRange >= (cityDistance! * 2);
-        
+
         const totalCount = data.value.vehicles.find((vehicle) => vehicle.id === vehicleId)?.count
 
         if (!totalCount) {
@@ -109,6 +166,15 @@ export default () => {
         return vehicleRangeValid && (totalCount - usedCount >= 1)
     }
 
+    const cityAlreadySelected = (copIndex: string, cityId: string) => {
+        return selectionState().value.find((choice) => choice.copIndex === copIndex)?.cityId === cityId
+    }
+
+    const vehicleAlreadySelected = (copIndex: string, vehicleId: string) => {
+        return selectionState().value.find((choice) => choice.copIndex === copIndex)?.vehicleId === vehicleId
+
+    }
+
 
     return {
         isLoading,
@@ -119,5 +185,7 @@ export default () => {
         cityVehicleData,
         cityAvailable,
         vehicleAvailable,
+        cityAlreadySelected,
+        vehicleAlreadySelected,
     }
 }
