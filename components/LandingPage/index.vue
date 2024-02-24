@@ -66,7 +66,7 @@ const fugitiveNotFound = computed(() => {
 
       <!-- Start button -->
       <div @click.stop="startHunting()"
-           class="absolute bottom-[8vh] right-[28vw] min-w-[100px] min-h-[100px] w-[10vw] h-[10vw] rounded-full bg-amber-950 overflow-hidden flex items-center justify-center drop-shadow-lg">
+           class="absolute md:bottom-[8vh] bottom-[2vh] md:right-[28vw] right-[20vw] min-w-[80px] min-h-[80px] w-[10vw] h-[10vw] rounded-full bg-amber-950 overflow-hidden flex items-center justify-center drop-shadow-lg">
         <button class="md:text-xl text-md text-white font-bold italic">Start</button>
       </div>
     </div>

@@ -55,6 +55,7 @@ export default () => {
     const fetchCityVehicleData = async () => {
         isFetchingData.value = true;
         const url = 'https://nuxt-backend-vez7.onrender.com/capture'
+        // const url = 'https://reqres.in/api/users?page=2'
         try {
 
             let timerCompleted = false;
@@ -65,12 +66,7 @@ export default () => {
                 timerCompleted = true
             }, 1500)
 
-            const {data} = await axios.get(url, {
-                headers: {
-                    "Content-Type": 'application/json',
-                    "User-Agent": 'PostmanRuntime/7.36.3'
-                }
-            })
+            const {data} = await axios.get(url)
 
             console.log(data)
 
