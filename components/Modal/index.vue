@@ -2,14 +2,50 @@
 
 const {setIsOpen, selectedOption} = useModal()
 
+const {cityVehicleData} = useCapture()
+
+const cities = computed(() => {
+  return cityVehicleData().value.cities
+})
+
+const vehicles = computed(() => {
+  return cityVehicleData().value.vehicles
+})
+
+const type = computed(() => {
+  return selectedOption().value.type
+})
+
 </script>
 
 <template>
   <div @click="setIsOpen(false)"
-       class=" h-screen fixed top-0 bottom-0 left-0 right-0 flex justify-center bg-black/50 p-16">
-    <div @click.stop="setIsOpen(true)" class="text-center bg-white h-full w-full">
-      <h2>Select {{ selectedOption().value.type }} for {{ selectedOption().value.copIndex }} cop</h2>
-      <button>Okay</button>
+       class=" h-screen fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black/50 p-16">
+    <div @click.stop="setIsOpen(true)"
+         class="bg-amber-50 rounded-lg h-full w-full p-4 grid grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-2 gap-4">
+      <div v-if="type==='city'" v-for="city in cities">
+        <div class="w-full h-full relative">
+          <NuxtImg :src="`/img/${city.id}.png`" class="object-cover w-full h-full rounded-lg"/>
+          <div
+              class="absolute overflow-hidden rounded-t-lg top-0 left-0 right-0 bottom-0 h-[40px] w-full flex items-center justify-between text-white bg-black/70 px-2">
+            <p class="text-md font-bold truncate">{{ city.name }}</p>
+            <p class="text-sm italic">{{ city.distance }} km</p>
+          </div>
+        </div>
+      </div>
+      <div v-else v-for="vehicle in vehicles">
+        <div class="h-full w-full relative">
+          <NuxtImg :src="`/img/${vehicle.id}.png`" class="object-cover w-full h-full rounded-lg"/>
+          <div
+              class="absolute overflow-hidden rounded-t-lg top-0 left-0 right-0 bottom-0 h-[40px] w-full flex items-center justify-between text-white bg-black/70 px-2">
+            <p class="text-md font-bold">{{ vehicle.kind }}</p>
+            <p class="text-sm italic">Range:{{ vehicle.range }} km</p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full flex items-center justify-center bg-black">
+        <button>Select</button>
+      </div>
     </div>
   </div>
 </template>

@@ -33,7 +33,9 @@ export default () => {
     ];
     const selectionState = () => useState<CopChoice[]>('selectionState', () => initialState)
 
-    const cityVehicleData = () => useState<CityVehicleData>('cityVehicleData')
+    const cityVehicleData = () => useState<CityVehicleData>('cityVehicleData', () => ({
+        cities: [], vehicles: []
+    }))
 
     const isLoading = useState('isLoading', () => false)
 
@@ -92,5 +94,6 @@ export default () => {
         updateSelectedCity,
         updateSelectedVehicle,
         getSelectedChoice,
+        cityVehicleData,
     }
 }
