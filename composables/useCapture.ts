@@ -65,7 +65,14 @@ export default () => {
                 timerCompleted = true
             }, 1500)
 
-            const {data} = await axios.get(url)
+            const {data} = await axios.get(url, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "User-Agent": 'PostmanRuntime/7.36.3'
+                }
+            })
+
+            console.log(data)
 
             const cityVehicleDataFromApi: CityVehicleData = data;
 

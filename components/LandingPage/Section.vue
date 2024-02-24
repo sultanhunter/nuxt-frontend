@@ -6,7 +6,9 @@ const props = defineProps({
   }
 })
 
-const copImage = `/img/cop${props.copIndex}.png`;
+const baseUrl = 'https://main--yocket-nuxt.netlify.app'
+
+const copImage = `${baseUrl}/img/cop${props.copIndex}.png`;
 
 const {
   getSelectedChoiceForCop,
@@ -19,7 +21,7 @@ const cityImage = computed(() => {
   if (!selectedCityId) {
     return ''
   }
-  return `img/${selectedCityId}.png`
+  return `${baseUrl}/img/${selectedCityId}.png`
 })
 
 const cityName = computed(() => {
@@ -43,7 +45,7 @@ const vehicleImage = computed(() => {
   if (!selectedVehicleId) {
     return ''
   }
-  return `img/${selectedVehicleId}.png`
+  return `${baseUrl}/img/${selectedVehicleId}.png`
 })
 
 const vehicleName = computed(() => {

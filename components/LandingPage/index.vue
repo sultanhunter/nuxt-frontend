@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const imageUrl1 = '/img/cop0.png';
-const imageUrl2 = '/img/cop1.png';
-const imageUrl3 = '/img/cop2.png';
+const baseUrl = 'https://main--yocket-nuxt.netlify.app'
+
+const imageUrl1 = `${baseUrl}/img/cop0.png`;
+const imageUrl2 = `${baseUrl}/img/cop1.png`;
+const imageUrl3 = `${baseUrl}/img/cop2.png`;
 
 
 const {isFetchingData, isSubmittingData, fetchCityVehicleData, startHunting, result} = useCapture()

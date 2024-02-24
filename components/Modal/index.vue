@@ -115,6 +115,8 @@ onMounted(() => {
   }
 })
 
+const baseUrl = 'https://main--yocket-nuxt.netlify.app';
+
 </script>
 
 <template>
@@ -132,7 +134,7 @@ onMounted(() => {
         <div @click.stop="onSelect(city.id)" class="w-full h-full relative">
 
           <!-- Main City Image -->
-          <NuxtImg :src="`/img/${city.id}.png`" class="object-cover w-full h-full rounded-lg"/>
+          <NuxtImg :src="`${baseUrl}/img/${city.id}.png`" class="object-cover w-full h-full rounded-lg"/>
 
           <!-- City Details tag -->
           <div
@@ -160,7 +162,7 @@ onMounted(() => {
         <div @click.stop="onSelect(vehicle.id)" class="h-full w-full relative">
 
           <!-- Main Vehicle Image -->
-          <NuxtImg :src="`/img/${vehicle.id}.png`" class="object-cover w-full h-full rounded-lg"/>
+          <NuxtImg :src="`${baseUrl}/img/${vehicle.id}.png`" class="object-cover w-full h-full rounded-lg"/>
 
           <!-- Vehicle Details tag -->
           <div

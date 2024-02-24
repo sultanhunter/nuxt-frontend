@@ -14,7 +14,9 @@ onMounted(() => {
   })
 })
 
-const imageUrl = '/img/criminal.png'
+const baseUrl = 'https://main--yocket-nuxt.netlify.app'
+
+const imageUrl = `${baseUrl}/img/criminal.png`
 </script>
 
 <template>

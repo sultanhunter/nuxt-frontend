@@ -20,8 +20,10 @@ onMounted(() => {
   })
 })
 
+const baseUrl = 'https://main--yocket-nuxt.netlify.app';
+
 const imageUrl = computed(() => {
-  return `/img/cop${captureCopIndex.value}.png`
+  return `${baseUrl}/img/cop${captureCopIndex.value}.png`
 })
 </script>
 
@@ -39,7 +41,7 @@ const imageUrl = computed(() => {
         <div ref="lottieContainer" class="flex-1">
         </div>
         <div class="flex-1">
-          <NuxtImg src="/img/criminal.png" class="rounded-lg border object-cover"/>
+          <NuxtImg :src="`${baseUrl}/img/criminal.png`" class="rounded-lg border object-cover"/>
         </div>
       </div>
     </div>
