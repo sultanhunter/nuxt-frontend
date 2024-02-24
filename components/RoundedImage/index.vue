@@ -18,6 +18,11 @@ const props = defineProps({
 const {setIsOpen, setSelectedOption} = useModal()
 
 const onClick = () => {
+
+  if (props.type === 'cop') {
+    return
+  }
+
   setIsOpen(true);
   setSelectedOption({
     copIndex: props.copIndex,

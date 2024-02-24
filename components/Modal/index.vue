@@ -4,13 +4,13 @@ const {setIsOpen, modalSelectedOption} = useModal()
 
 const {
   cityVehicleData,
-  updateSelectedVehicle,
-  updateSelectedCity,
-  cityAvailable,
-  vehicleAvailable,
-  getSelectedChoice,
-  cityAlreadySelected,
-  vehicleAlreadySelected,
+  updateSelectedVehicleForCop,
+  updateSelectedCityForCop,
+  cityAvailableForCop,
+  vehicleAvailableForCop,
+  getSelectedChoiceForCop,
+  cityAlreadySelectedForCop,
+  vehicleAlreadySelectedForCop,
 } = useCapture()
 
 const cities = computed(() => {
@@ -40,7 +40,7 @@ const onOutsideClick = () => {
 
 const selectedCityId = computed(() => {
 
-  const selectedChoice = getSelectedChoice(copIndex.value)
+  const selectedChoice = getSelectedChoiceForCop(copIndex.value)
 
   return selectedChoice?.cityId ?? ''
 })
@@ -48,7 +48,7 @@ const selectedCityId = computed(() => {
 const onSelect = (id: string) => {
 
   if (type.value === 'city') {
-    if (!cityAvailable(copIndex.value, id)) {
+    if (!cityAvailableForCop(copIndex.value, id)) {
       return
     } else {
       if (selectedId.value === id) {
@@ -61,7 +61,7 @@ const onSelect = (id: string) => {
 
     const cityId = selectedCityId.value
 
-    const available = vehicleAvailable(copIndex.value, cityId, id)
+    const available = vehicleAvailableForCop(copIndex.value, cityId, id)
 
     if (!cityId || !available) {
       return
@@ -78,11 +78,11 @@ const onSelect = (id: string) => {
 
 const onConfirm = () => {
   if (type.value === 'vehicle') {
-    updateSelectedVehicle(copIndex.value, selectedId.value)
+    updateSelectedVehicleForCop(copIndex.value, selectedId.value)
     onOutsideClick()
 
   } else if (type.value === 'city') {
-    updateSelectedCity(copIndex.value, selectedId.value)
+    updateSelectedCityForCop(copIndex.value, selectedId.value)
     onOutsideClick()
 
   }
@@ -91,13 +91,13 @@ const onConfirm = () => {
 onMounted(() => {
   if (type.value === 'vehicle') {
     vehicles.value.forEach((vehicle) => {
-      if (vehicleAlreadySelected(copIndex.value, vehicle.id)) {
+      if (vehicleAlreadySelectedForCop(copIndex.value, vehicle.id)) {
         selectedId.value = vehicle.id
       }
     })
   } else {
     cities.value.forEach((city) => {
-      if (cityAlreadySelected(copIndex.value, city.id)) {
+      if (cityAlreadySelectedForCop(copIndex.value, city.id)) {
         console.log('city', city.id)
         selectedId.value = city.id
       }
@@ -132,7 +132,7 @@ onMounted(() => {
           </div>
 
           <!-- Not available tag -->
-          <div v-if="!cityAvailable(copIndex,city.id) && !(selectedId===city.id)"
+          <div v-if="!cityAvailableForCop(copIndex,city.id) && !(selectedId===city.id)"
                class="absolute rounded-lg top-0 left-0 bottom-0 right-0 h-full flex items-center justify-center bg-red-400/60 text-white font-bold">
             Not Available
           </div>
@@ -160,7 +160,7 @@ onMounted(() => {
           </div>
 
           <!-- Not available tag -->
-          <div v-if="!vehicleAvailable(copIndex,selectedCityId,vehicle.id) && !(selectedId===vehicle.id)"
+          <div v-if="!vehicleAvailableForCop(copIndex,selectedCityId,vehicle.id) && !(selectedId===vehicle.id)"
                class="absolute rounded-lg top-0 left-0 bottom-0 right-0 h-full flex items-center justify-center bg-red-400/60 text-white font-bold">
             Not Available
           </div>

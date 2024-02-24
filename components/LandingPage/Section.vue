@@ -1,18 +1,18 @@
 <script setup>
 const props = defineProps({
-  index: {
+  copIndex: {
     type: String,
     required: true,
   }
 })
 
-const copImage = `/img/cop${props.index}.png`;
+const copImage = `/img/cop${props.copIndex}.png`;
 
 const {
-  getSelectedChoice,
+  getSelectedChoiceForCop,
 } = useCapture()
 
-const choice = getSelectedChoice(props.index)
+const choice = getSelectedChoiceForCop(props.copIndex)
 const cityImage = computed(() => {
   const selectedCityId = choice.cityId;
   if (!selectedCityId) {
@@ -36,17 +36,17 @@ const vehicleImage = computed(() => {
 
   <div class="flex flex-row w-full h-full justify-between">
     <div class="flex-1 py-3 px-1 md:px-4">
-      <RoundedImage :src="copImage" type="cop" :copIndex="index"/>
+      <RoundedImage :src="copImage" type="cop" :copIndex="copIndex"/>
     </div>
     <div class="flex-1 py-3 px-1 md:px-4">
       <div class="w-full">
-        <RoundedImage :src="cityImage" type="city" :copIndex="index"/>
+        <RoundedImage :src="cityImage" type="city" :copIndex="copIndex"/>
       </div>
 
     </div>
     <div class="flex-1 py-3 px-1 md:px-4">
       <div class="w-full">
-        <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="index"/>
+        <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="copIndex"/>
       </div>
 
     </div>
