@@ -1,6 +1,6 @@
 interface SelectedModalOption {
-    copIndex: String;
-    type: String;
+    copIndex: string;
+    type: string;
 }
 
 
