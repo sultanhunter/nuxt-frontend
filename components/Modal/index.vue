@@ -49,22 +49,31 @@ const selectedCityId = computed(() => {
 const onSelect = (id: string) => {
 
   if (type.value === 'city') {
+
+    const cityAvailable = cityAvailableForCop(copIndex.value, id)
+    if (!cityAvailable) {
+      return
+    }
     if (selectedId.value === id) {
       selectedId.value = ''
       return
     }
 
   } else if (type.value === 'vehicle') {
+    const vehicleAvailable = vehicleAvailableForCop(copIndex.value, id)
 
+    if (!vehicleAvailable) {
+      return
+    }
     const cityId = selectedCityId.value
 
-    const available = vehicleAvailableForCity(cityId, id)
+    const availableForCity = vehicleAvailableForCity(cityId, id)
 
     if (!cityId) {
-      alert('Select City First')
+      alert('Select city first')
       return
-    } else if (!available) {
-      alert('Vehicle range not valid for selected city')
+    } else if (!availableForCity) {
+      alert('Vehicle range invalid for selected city. Please select a different city')
       return
     } else {
       if (selectedId.value === id) {
@@ -75,6 +84,7 @@ const onSelect = (id: string) => {
   }
 
   selectedId.value = id
+
 }
 
 const onConfirm = () => {
@@ -128,7 +138,7 @@ onMounted(() => {
           <div
               class="absolute overflow-hidden rounded-t-lg top-0 left-0 right-0 bottom-0 h-[40px] w-full flex items-center justify-between text-white bg-black/70 px-2">
             <p class="text-md font-bold truncate">{{ city.name }}</p>
-            <p class="text-sm italic">{{ city.distance }} km</p>
+            <p class="text-sm italic">Trip: {{ city.distance * 2 }} km</p>
           </div>
 
           <!-- Not available tag -->

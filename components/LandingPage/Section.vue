@@ -46,6 +46,24 @@ const vehicleImage = computed(() => {
   return `img/${selectedVehicleId}.png`
 })
 
+const vehicleName = computed(() => {
+  const selectedVehicleId = choice.vehicleId
+
+  const vehicle = cityVehicleData().value.vehicles.find((vehicle) => vehicle.id === selectedVehicleId)
+
+  return vehicle.kind
+
+})
+
+const vehicleRange = computed(() => {
+  const selectedVehicleId = choice.vehicleId
+
+  const vehicle = cityVehicleData().value.vehicles.find((vehicle) => vehicle.id === selectedVehicleId)
+
+  return vehicle.range
+
+})
+
 </script>
 
 
@@ -62,7 +80,7 @@ const vehicleImage = computed(() => {
           <div v-if="cityImage.length>1"
                class="absolute top-0 left-0 bg-black/70 w-full rounded-t-lg flex flex-row justify-between border-x border-t p-2">
             <p class="text-white text-md font-bold">{{ cityName }}</p>
-            <p class="text-white text-sm italic">{{ cityDistance }} km</p>
+            <p class="text-white text-sm italic">Trip: {{ cityDistance * 2 }} km</p>
           </div>
         </div>
 
@@ -71,7 +89,14 @@ const vehicleImage = computed(() => {
     </div>
     <div class="flex-1 py-3 px-1 md:px-6">
       <div class="w-full">
-        <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="copIndex"/>
+        <div class="relative">
+          <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="copIndex"/>
+          <div v-if="vehicleImage.length>1"
+               class="absolute top-0 left-0 bg-black/70 w-full rounded-t-lg flex flex-row justify-between border-x border-t p-2">
+            <p class="text-white text-md font-bold">{{ vehicleName }}</p>
+            <p class="text-white text-sm italic">Range: {{ vehicleRange }} km</p>
+          </div>
+        </div>
       </div>
 
     </div>
