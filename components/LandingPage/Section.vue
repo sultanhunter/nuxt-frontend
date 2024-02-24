@@ -23,6 +23,14 @@ const cityImage = computed(() => {
   return `img/${selectedCityId}.png`
 })
 
+const vehicleImage = computed(() => {
+  const selectedVehicleId = choice.value.vehicleId;
+  if (!selectedVehicleId) {
+    return ''
+  }
+  return `img/${selectedVehicleId}.png`
+})
+
 </script>
 
 
@@ -40,7 +48,7 @@ const cityImage = computed(() => {
     </div>
     <div class="flex-1 py-3 px-1 md:px-4">
       <div class="w-full">
-        <RoundedImage :src="cityImage" type="vehicle" :copIndex="index"/>
+        <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="index"/>
       </div>
 
     </div>
