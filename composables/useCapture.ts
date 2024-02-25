@@ -60,15 +60,13 @@ export default () => {
 
             let timerCompleted = false;
             setTimeout(() => {
-                if (cityVehicleData().value) {
+                if (cityVehicleData().value.cities.length > 0 && cityVehicleData().value.vehicles.length > 0) {
                     isFetchingData.value = false
                 }
                 timerCompleted = true
             }, 1500)
 
             const {data} = await axios.get(url)
-
-            console.log(data)
 
             const cityVehicleDataFromApi: CityVehicleData = data;
 
