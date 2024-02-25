@@ -123,7 +123,7 @@ const baseUrl = 'https://main--yocket-nuxt.netlify.app';
 
   <!-- Outer most semi transparent div -->
   <div @click="onOutsideClick()"
-       class=" h-screen fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black/50 p-16">
+       class=" h-screen fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black/50 md:p-16">
 
     <!-- Modal Main Div -->
     <div @click.stop="setIsOpen(true)"
@@ -186,9 +186,13 @@ const baseUrl = 'https://main--yocket-nuxt.netlify.app';
       </div>
 
       <!-- Confirm Selection Button -->
-      <div class="w-full flex items-center justify-center" :class="{ 'md:col-span-3': type === 'vehicle' }">
+      <div class="w-full flex flex-col items-center justify-center gap-4"
+           :class="{ 'md:col-span-3': type === 'vehicle' }">
         <button @click.stop="onConfirm()" class="h-10 w-[180px] bg-amber-800 rounded-lg text-white">Confirm Selection
         </button>
+        <div class="h-10 w-[100px] text-white rounded-full bg-red-400 flex items-center justify-center">
+          <button @click.stop="onOutsideClick" class="italic">Close</button>
+        </div>
       </div>
     </div>
   </div>

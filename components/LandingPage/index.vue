@@ -47,18 +47,18 @@ const fugitiveNotFound = computed(() => {
 
       <!-- Main content div -->
       <div class="h-full w-full flex flex-col">
-        <div class="flex-grow bg-cover bg-no-repeat  " :style="{ 'background-image': `url(${imageUrl1})` }">
-          <div class="backdrop-blur bg-amber-100/70 h-full w-full border-b">
+        <div class="flex-grow ">
+          <div class="backdrop-blur bg-amber-100/70 h-full w-screen border-b">
             <LandingPageSection copIndex="0"/>
           </div>
         </div>
-        <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl2})` }">
-          <div class="backdrop-blur bg-amber-500/60 h-full w-full border-b">
+        <div class="flex-grow ">
+          <div class="backdrop-blur bg-amber-500/60 h-full w-screen border-b">
             <LandingPageSection copIndex="1"/>
           </div>
         </div>
-        <div class="flex-grow bg-cover bg-no-repeat " :style="{ 'background-image': `url(${imageUrl3})` }">
-          <div class="backdrop-blur bg-amber-800/70 h-full w-full border-b">
+        <div class="flex-grow ">
+          <div class="backdrop-blur bg-amber-800/70 h-full w-screen border-b">
             <LandingPageSection copIndex="2"/>
           </div>
         </div>

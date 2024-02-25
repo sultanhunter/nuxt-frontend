@@ -10,6 +10,8 @@ const baseUrl = 'https://main--yocket-nuxt.netlify.app'
 
 const copImage = `${baseUrl}/img/cop${props.copIndex}.png`;
 
+const copName = `Cop ${parseInt(props.copIndex) + 1}`
+
 const {
   getSelectedChoiceForCop,
   cityVehicleData,
@@ -71,18 +73,39 @@ const vehicleRange = computed(() => {
 
 <template>
 
-  <div class="flex flex-row w-full h-full justify-between">
+  <!--  <div class="flex h-full w-full bg-black overflow-scroll">-->
+  <!--    <div class="flex-1 py-3 px-1 md:px-6">-->
+  <!--      <div class="bg-red-400 h-full  min-w-[250px]"></div>-->
+  <!--    </div>-->
+  <!--    <div class="flex-1 py-3 px-1 md:px-6">-->
+  <!--      <div class="bg-blue-400 h-full min-w-[250px]"></div>-->
+  <!--    </div>-->
+  <!--    <div class="flex-1 py-3 px-1 md:px-6">-->
+  <!--      <div class="bg-amber-400 h-full  min-w-[250px]"></div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <div class="flex flex-row w-screen h-full overflow-scroll">
     <div class="flex-1 py-3 px-1 md:px-6">
-      <RoundedImage :src="copImage" type="cop" :copIndex="copIndex"/>
+      <div class="w-full min-w-[250px]">
+        <div class="relative">
+          <RoundedImage :src="copImage" type="city" :copIndex="copIndex"/>
+          <div v-if="copImage.length>1"
+               class="absolute top-0 left-0 bg-black/70 w-full rounded-t-lg flex flex-row border-x border-t p-2">
+            <p class="text-white text-md font-bold ">{{ copName }}</p>
+          </div>
+        </div>
+
+      </div>
     </div>
     <div class="flex-1 py-3 px-1 md:px-6">
-      <div class="w-full ">
+      <div class="w-full min-w-[250px]">
         <div class="relative">
           <RoundedImage :src="cityImage" type="city" :copIndex="copIndex"/>
           <div v-if="cityImage.length>1"
                class="absolute top-0 left-0 bg-black/70 w-full rounded-t-lg flex flex-row justify-between border-x border-t p-2">
-            <p class="text-white text-md font-bold">{{ cityName }}</p>
-            <p class="text-white text-sm italic">Trip: {{ cityDistance * 2 }} km</p>
+            <p class="text-white text-md font-bold ">{{ cityName }}</p>
+            <p class="text-white text-sm italic ">Trip: {{ cityDistance * 2 }} km</p>
           </div>
         </div>
 
@@ -90,7 +113,7 @@ const vehicleRange = computed(() => {
 
     </div>
     <div class="flex-1 py-3 px-1 md:px-6">
-      <div class="w-full">
+      <div class="w-full min-w-[250px]">
         <div class="relative">
           <RoundedImage :src="vehicleImage" type="vehicle" :copIndex="copIndex"/>
           <div v-if="vehicleImage.length>1"
