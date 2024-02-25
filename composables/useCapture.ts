@@ -55,16 +55,8 @@ export default () => {
     const fetchCityVehicleData = async () => {
         isFetchingData.value = true;
         const url = 'https://nuxt-backend-vez7.onrender.com/capture'
-        // const url = 'https://reqres.in/api/users?page=2'
+        // const url = 'http://localhost:8000/capture'
         try {
-
-            let timerCompleted = false;
-            setTimeout(() => {
-                if (cityVehicleData().value.cities.length > 0 && cityVehicleData().value.vehicles.length > 0) {
-                    isFetchingData.value = false
-                }
-                timerCompleted = true
-            }, 1500)
 
             const {data} = await axios.get(url)
 
@@ -72,10 +64,7 @@ export default () => {
 
             const ourData = cityVehicleData()
             ourData.value = cityVehicleDataFromApi
-            if (timerCompleted) {
-                isFetchingData.value = false
-            }
-
+            isFetchingData.value = false
 
         } catch (e) {
             isFetchingData.value = false
@@ -89,7 +78,7 @@ export default () => {
             return
         }
         const url = 'https://nuxt-backend-vez7.onrender.com/capture'
-
+        // const url = 'http://localhost:8000/capture'
         const body = {
             'copChoices': selectionState().value.map((choice) => ({
                 'cop': choice.copIndex,
