@@ -25,6 +25,8 @@ const baseUrl = 'https://main--yocket-nuxt.netlify.app';
 const imageUrl = computed(() => {
   return `${baseUrl}/img/cop${captureCopIndex.value}.png`
 })
+
+const copName = `Cop ${parseInt(captureCopIndex.value) + 1}`;
 </script>
 
 <template>
@@ -35,8 +37,11 @@ const imageUrl = computed(() => {
         <p class="text-xl italic text-white">Caught</p>
       </div>
       <div class="flex md:px-20 px-5 items-center justify-center h-full w-full">
-        <div class="flex-1">
+        <div class="flex-1 relative">
           <NuxtImg :src="imageUrl" class="rounded border object-cover"/>
+          <div class="absolute top-0 left-0 bg-black/70 w-full rounded-t-lg flex flex-row border-x border-t p-2">
+            <p class="text-white md:text-md font-bold ">{{ copName }}</p>
+          </div>
         </div>
         <div ref="lottieContainer" class="flex-1">
         </div>
