@@ -48,7 +48,7 @@ export default () => {
 
     const result = () => useState<Result | null>('result', () => null)
 
-    const isFetchingData = useState('isLoading', () => true)
+    const isFetchingData = useState('isLoading', () => false)
 
     const isSubmittingData = useState('isSubmitting', () => false)
 
