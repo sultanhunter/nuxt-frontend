@@ -58,13 +58,26 @@ export default () => {
         // const url = 'http://localhost:8000/capture'
         try {
 
+            let timerCompleted = false
+
+            setTimeout(() => {
+                const data = cityVehicleData().value
+                if (data.cities.length > 0 && data.vehicles.length > 0) {
+                    isFetchingData.value = false
+                }
+                timerCompleted = true
+            }, 1500)
+
             const {data} = await axios.get(url)
 
             const cityVehicleDataFromApi: CityVehicleData = data;
 
             const ourData = cityVehicleData()
             ourData.value = cityVehicleDataFromApi
-            isFetchingData.value = false
+
+            if (timerCompleted) {
+                isFetchingData.value = false
+            }
 
         } catch (e) {
             isFetchingData.value = false
