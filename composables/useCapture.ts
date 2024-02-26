@@ -48,7 +48,7 @@ export default () => {
 
     const result = () => useState<Result | null>('result', () => null)
 
-    const isFetchingData = useState('isLoading', () => false)
+    const isFetchingData = useState('isLoading', () => true)
 
     const isSubmittingData = useState('isSubmitting', () => false)
 
@@ -58,15 +58,15 @@ export default () => {
         // const url = 'http://localhost:8000/capture'
         try {
 
-            let timerCompleted = false
-
-            setTimeout(() => {
-                const data = cityVehicleData().value
-                if (data.cities.length > 0 && data.vehicles.length > 0) {
-                    isFetchingData.value = false
-                }
-                timerCompleted = true
-            }, 1500)
+            // let timerCompleted = false
+            //
+            // setTimeout(() => {
+            //     const data = cityVehicleData().value
+            //     if (data.cities.length > 0 && data.vehicles.length > 0) {
+            //         isFetchingData.value = false
+            //     }
+            //     timerCompleted = true
+            // }, 1500)
 
             const {data} = await axios.get(url)
 
@@ -75,9 +75,10 @@ export default () => {
             const ourData = cityVehicleData()
             ourData.value = cityVehicleDataFromApi
 
-            if (timerCompleted) {
-                isFetchingData.value = false
-            }
+            // if (timerCompleted) {
+            //     isFetchingData.value = false
+            // }
+            isFetchingData.value = false
 
         } catch (e) {
             isFetchingData.value = false
