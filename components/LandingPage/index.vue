@@ -2,7 +2,7 @@
 
 const {isFetchingData, isSubmittingData, fetchCityVehicleData, startHunting, result} = useCapture()
 
-onMounted(() => {
+onBeforeMount(() => {
   fetchCityVehicleData();
 });
 
